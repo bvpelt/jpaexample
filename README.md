@@ -12,5 +12,5 @@ mvn archetype:generate -DgroupId=com.javacodegeeks.ultimate -DartifactId=jpa -Da
 ## Review data
 Open sql commandline 
 ``` 
-java -cp ~/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Shell -url jdbc:h2:~/jpa
+java -cp ~/.m2/repository/com/h2database/h2/1.4.197/h2-1.4.197.jar org.h2.tools.Shell -url jdbc:h2:~/jpa
 ```

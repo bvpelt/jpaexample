@@ -18,13 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-
-    public static void main(String[] args) {
-        Main main = new Main();
-        main.run();
-    }
+public class JPATest {
+    private static final Logger logger = LoggerFactory.getLogger(JPATest.class);
 
     public void run() {
         EntityManagerFactory factory = null;
@@ -32,12 +27,37 @@ public class Main {
         try {
             factory = Persistence.createEntityManagerFactory("PersistenceUnit");
             entityManager = factory.createEntityManager();
-            persistPerson(entityManager);
-            persistGeek(entityManager);
-            getGeek(entityManager);
+
+            Person person = new Person();
+            person.setFirstName("Homer");
+            person.setLastName("Simpson");
+            persistPerson(entityManager, person);
+
+            Geek geek = new Geek();
+            geek.setFirstName("Gavin");
+            geek.setLastName("Coffee");
+            geek.setFavouriteProgrammingLanguage("Java");
+            persistGeek(entityManager, geek);
+
+            geek = new Geek();
+            geek.setFirstName("Christian");
+            geek.setLastName("Cup");
+            geek.setFavouriteProgrammingLanguage("Java");
+            persistGeek(entityManager, geek);
+
+            geek = new Geek();
+            geek.setFirstName("Thomas");
+            geek.setLastName("Micro");
+            geek.setFavouriteProgrammingLanguage("C#");
+            persistGeek(entityManager, geek);
+
+            List<Person> resultList = getGeek(entityManager);
+            showPersonResults(resultList);
+
+
             persistProject(entityManager);
 
-            String firstName = "Homer";
+            String firstName = person.getFirstName();
             List<Person> results = findPerson(entityManager, firstName);
             showPersonResults(results);
         } catch (Exception e) {
@@ -65,14 +85,11 @@ public class Main {
         }
     }
 
-    private void persistPerson(EntityManager entityManager) {
+    public void persistPerson(EntityManager entityManager, Person person) {
         logger.info("Start: Persist Person");
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Person person = new Person();
-            person.setFirstName("Homer");
-            person.setLastName("Simpson");
             entityManager.persist(person);
             transaction.commit();
         } catch (Exception e) {
@@ -84,26 +101,14 @@ public class Main {
         logger.info("End  : Persist Person");
     }
 
-    private void persistGeek(EntityManager entityManager) {
+    public void persistGeek(EntityManager entityManager, Geek geek) {
         logger.info("Start: Persist Geek");
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Geek geek = new Geek();
-            geek.setFirstName("Gavin");
-            geek.setLastName("Coffee");
-            geek.setFavouriteProgrammingLanguage("Java");
+
             entityManager.persist(geek);
-            geek = new Geek();
-            geek.setFirstName("Thomas");
-            geek.setLastName("Micro");
-            geek.setFavouriteProgrammingLanguage("C#");
-            entityManager.persist(geek);
-            geek = new Geek();
-            geek.setFirstName("Christian");
-            geek.setLastName("Cup");
-            geek.setFavouriteProgrammingLanguage("Java");
-            entityManager.persist(geek);
+
             transaction.commit();
         } catch (Exception e) {
             logger.error("Exception occured {}", e);
@@ -114,10 +119,12 @@ public class Main {
         logger.info("End  : Persist Geek");
     }
 
-    private void getGeek(EntityManager entityManager) {
+    public List<Person> getGeek(EntityManager entityManager) {
         TypedQuery<Person> query = entityManager.createQuery("from Person", Person.class);
         List<Person> resultList = query.getResultList();
-        showPersonResults(resultList);
+
+        return resultList;
+
     }
 
     private void persistProject(EntityManager entityManager) {
