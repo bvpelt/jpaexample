@@ -17,7 +17,7 @@
         <maven.compiler.source>1.10</maven.compiler.source>
         <maven.compiler.target>1.10</maven.compiler.target>
         <jee.version>8.0</jee.version>
-        <h2.version>1.4.197</h2.version>
+        <h2.version>2.0.206</h2.version>
         <hibernate.version>5.4.0.Final</hibernate.version>
         <slf4jVersion>1.7.25</slf4jVersion>
         <junitVersion>4.12</junitVersion>
